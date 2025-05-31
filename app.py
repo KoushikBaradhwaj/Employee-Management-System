@@ -22,8 +22,8 @@ app.secret_key = os.environ.get("SESSION_SECRET", "default_secret_key")
 
 # MySQL DB configuration
 # Example: mysql+pymysql://username:password@host:port/database
-db_user = os.environ.get("DB_USER", "root")
-db_pass = os.environ.get("DB_PASSWORD", "admin")
+db_user = os.environ.get("DB_USER", "your user name")
+db_pass = os.environ.get("DB_PASSWORD", "your password")
 db_host = os.environ.get("DB_HOST", "localhost")
 db_port = os.environ.get("DB_PORT", "3306")
 db_name = os.environ.get("DB_NAME", "employee")
