@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}Training Assignments - Employee Management System{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('training_list') }}">Training Programs</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Training Assignments</li>
+            </ol>
+        </nav>
+        <div class="d-flex justify-content-between align-items-center">
+            <h1 class="header-title">
+                <i class="fas fa-user-graduate me-2"></i> Training Assignments
+            </h1>
+            <a href="{{ url_for('emp_training_create') }}" class="btn btn-primary">
+                <i class="fas fa-plus-circle me-1"></i> Assign Training to Employee
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        {% if emp_trainings %}
+        <div class="table-responsive">
+            <table id="trainingAssignmentsTable" class="table table-striped datatable">
+                <thead>
+                    <tr>
+                        <th>Employee ID</th>
+                        <th>Employee Name</th>
+                        <th>Training ID</th>
+                        <th>Training Name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for emp_training, emp_name, training_name in emp_trainings %}
+                    <tr>
+                        <td>{{ emp_training.emp_id }}</td>
+                        <td>{{ emp_name }}</td>
+                        <td>{{ emp_training.training_id }}</td>
+                        <td>{{ training_name }}</td>
+                        <td>
+                            <form action="{{ url_for('emp_training_delete', emp_id=emp_training.emp_id, training_id=emp_training.training_id) }}" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-sm btn-danger btn-delete" data-bs-toggle="tooltip" title="Remove Assignment">
+                                    <i class="fas fa-unlink"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle me-2"></i> No training assignments found. Assign trainings to employees to get started.
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize the DataTable
+        initDataTable('trainingAssignmentsTable');
+    });
+</script>
+{% endblock %}

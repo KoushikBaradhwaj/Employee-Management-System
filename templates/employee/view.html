@@ -1,0 +1,622 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ employee.Name }} - Employee Details{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('employee_list') }}">Employees</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ employee.Name }}</li>
+            </ol>
+        </nav>
+        <div class="d-flex justify-content-between align-items-center">
+            <h1 class="header-title">
+                <i class="fas fa-user me-2"></i> Employee Profile
+            </h1>
+            <div>
+                <a href="{{ url_for('employee_edit', id=employee.Id) }}" class="btn btn-warning">
+                    <i class="fas fa-edit me-1"></i> Edit
+                </a>
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteEmployeeModal">
+                    <i class="fas fa-trash-alt me-1"></i> Delete
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Employee Details Card -->
+<div class="card mb-4">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0"><i class="fas fa-id-card me-2"></i> Basic Information</h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <dl class="row">
+                    <dt class="col-sm-4">ID:</dt>
+                    <dd class="col-sm-8">{{ employee.Id }}</dd>
+                    
+                    <dt class="col-sm-4">Name:</dt>
+                    <dd class="col-sm-8">{{ employee.Name }}</dd>
+                    
+                    <dt class="col-sm-4">Email:</dt>
+                    <dd class="col-sm-8">{{ employee.Emial_Id }}</dd>
+                    
+                    <dt class="col-sm-4">Phone:</dt>
+                    <dd class="col-sm-8">{{ employee.Phone_no }}</dd>
+                </dl>
+            </div>
+            <div class="col-md-6">
+                <dl class="row">
+                    <dt class="col-sm-4">Position:</dt>
+                    <dd class="col-sm-8">{{ employee.Post }}</dd>
+                    
+                    <dt class="col-sm-4">Salary:</dt>
+                    <dd class="col-sm-8">{{ employee.Salary }}</dd>
+                    
+                    <dt class="col-sm-4">Address:</dt>
+                    <dd class="col-sm-8">{{ employee.Address }}</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tabs for different employee-related data -->
+<ul class="nav nav-tabs mb-4" id="employeeTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="departments-tab" data-bs-toggle="tab" data-bs-target="#departments" type="button" role="tab" aria-controls="departments" aria-selected="true">
+            <i class="fas fa-building me-1"></i> Departments
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="skills-tab" data-bs-toggle="tab" data-bs-target="#skills" type="button" role="tab" aria-controls="skills" aria-selected="false">
+            <i class="fas fa-tools me-1"></i> Skills
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="projects-tab" data-bs-toggle="tab" data-bs-target="#projects" type="button" role="tab" aria-controls="projects" aria-selected="false">
+            <i class="fas fa-project-diagram me-1"></i> Projects
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="attendance-tab" data-bs-toggle="tab" data-bs-target="#attendance" type="button" role="tab" aria-controls="attendance" aria-selected="false">
+            <i class="fas fa-clock me-1"></i> Attendance
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="leaves-tab" data-bs-toggle="tab" data-bs-target="#leaves" type="button" role="tab" aria-controls="leaves" aria-selected="false">
+            <i class="fas fa-calendar-minus me-1"></i> Leaves
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="more-tab" data-bs-toggle="tab" data-bs-target="#more" type="button" role="tab" aria-controls="more" aria-selected="false">
+            <i class="fas fa-ellipsis-h me-1"></i> More
+        </button>
+    </li>
+</ul>
+
+<div class="tab-content" id="employeeTabsContent">
+    <!-- Departments Tab -->
+    <div class="tab-pane fade show active" id="departments" role="tabpanel" aria-labelledby="departments-tab">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Departments</h5>
+                <a href="{{ url_for('emp_department_create') }}" class="btn btn-sm btn-primary">
+                    <i class="fas fa-plus-circle me-1"></i> Assign to Department
+                </a>
+            </div>
+            <div class="card-body">
+                {% if departments %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Department ID</th>
+                                <th>Department Name</th>
+                                <th>Location</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for department in departments %}
+                            <tr>
+                                <td>{{ department.dept_id }}</td>
+                                <td>{{ department.dept_name }}</td>
+                                <td>{{ department.dept_location }}</td>
+                                <td>
+                                    <form action="{{ url_for('emp_department_delete', emp_id=employee.Id, dept_id=department.dept_id) }}" method="post" class="d-inline">
+                                        <button type="submit" class="btn btn-sm btn-danger btn-delete" data-bs-toggle="tooltip" title="Remove from Department">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i> This employee is not assigned to any departments yet.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Skills Tab -->
+    <div class="tab-pane fade" id="skills" role="tabpanel" aria-labelledby="skills-tab">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Skills</h5>
+                <a href="{{ url_for('emp_skill_create') }}" class="btn btn-sm btn-primary">
+                    <i class="fas fa-plus-circle me-1"></i> Add Skill
+                </a>
+            </div>
+            <div class="card-body">
+                {% if skills %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Skill ID</th>
+                                <th>Skill Name</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for skill in skills %}
+                            <tr>
+                                <td>{{ skill.skill_id }}</td>
+                                <td>{{ skill.skill_name }}</td>
+                                <td>
+                                    <form action="{{ url_for('emp_skill_delete', emp_id=employee.Id, skill_id=skill.skill_id) }}" method="post" class="d-inline">
+                                        <button type="submit" class="btn btn-sm btn-danger btn-delete" data-bs-toggle="tooltip" title="Remove Skill">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i> No skills have been added for this employee yet.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Projects Tab -->
+    <div class="tab-pane fade" id="projects" role="tabpanel" aria-labelledby="projects-tab">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Projects</h5>
+                <a href="{{ url_for('emp_project_create') }}" class="btn btn-sm btn-primary">
+                    <i class="fas fa-plus-circle me-1"></i> Assign to Project
+                </a>
+            </div>
+            <div class="card-body">
+                {% if projects %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Project ID</th>
+                                <th>Project Name</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for project in projects %}
+                            <tr>
+                                <td>{{ project.project_id }}</td>
+                                <td>{{ project.project_name }}</td>
+                                <td>{{ project.start_date }}</td>
+                                <td>{{ project.end_date }}</td>
+                                <td>
+                                    <form action="{{ url_for('emp_project_delete', emp_id=employee.Id, project_id=project.project_id) }}" method="post" class="d-inline">
+                                        <button type="submit" class="btn btn-sm btn-danger btn-delete" data-bs-toggle="tooltip" title="Remove from Project">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i> This employee is not assigned to any projects yet.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Attendance Tab -->
+    <div class="tab-pane fade" id="attendance" role="tabpanel" aria-labelledby="attendance-tab">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Attendance Records</h5>
+                <a href="{{ url_for('attendance_create') }}" class="btn btn-sm btn-primary">
+                    <i class="fas fa-plus-circle me-1"></i> Add Attendance Record
+                </a>
+            </div>
+            <div class="card-body">
+                {% if attendance %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Clock In</th>
+                                <th>Clock Out</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for record in attendance %}
+                            <tr>
+                                <td>{{ record.date }}</td>
+                                <td>{{ record.clock_in }}</td>
+                                <td>{{ record.clock_out }}</td>
+                                <td>
+                                    <a href="{{ url_for('attendance_edit', id=record.attendance_id) }}" class="btn btn-sm btn-warning btn-action" data-bs-toggle="tooltip" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form action="{{ url_for('attendance_delete', id=record.attendance_id) }}" method="post" class="d-inline">
+                                        <button type="submit" class="btn btn-sm btn-danger btn-delete" data-bs-toggle="tooltip" title="Delete">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i> No attendance records found for this employee.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Leaves Tab -->
+    <div class="tab-pane fade" id="leaves" role="tabpanel" aria-labelledby="leaves-tab">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Leave Records</h5>
+                <a href="{{ url_for('leave_create') }}" class="btn btn-sm btn-primary">
+                    <i class="fas fa-plus-circle me-1"></i> Add Leave Record
+                </a>
+            </div>
+            <div class="card-body">
+                {% if leaves %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Leave Type</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Duration (Days)</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for leave in leaves %}
+                            <tr>
+                                <td>{{ leave.leave_type }}</td>
+                                <td>{{ leave.start_date }}</td>
+                                <td>{{ leave.end_date }}</td>
+                                <td>
+                                    {% set duration = (leave.end_date - leave.start_date).days + 1 %}
+                                    {{ duration }}
+                                </td>
+                                <td>
+                                    <a href="{{ url_for('leave_edit', id=leave.leave_id) }}" class="btn btn-sm btn-warning btn-action" data-bs-toggle="tooltip" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form action="{{ url_for('leave_delete', id=leave.leave_id) }}" method="post" class="d-inline">
+                                        <button type="submit" class="btn btn-sm btn-danger btn-delete" data-bs-toggle="tooltip" title="Delete">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i> No leave records found for this employee.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- More Tab (Additional Information) -->
+    <div class="tab-pane fade" id="more" role="tabpanel" aria-labelledby="more-tab">
+        <div class="row">
+            <!-- Emergency Contacts -->
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Emergency Contacts</h5>
+                        <a href="{{ url_for('emergency_contact_create') }}" class="btn btn-sm btn-primary">
+                            <i class="fas fa-plus-circle me-1"></i> Add Contact
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        {% if emergency_contacts %}
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Relationship</th>
+                                        <th>Phone</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for contact in emergency_contacts %}
+                                    <tr>
+                                        <td>{{ contact.contact_name }}</td>
+                                        <td>{{ contact.relationship }}</td>
+                                        <td>{{ contact.phone_no }}</td>
+                                        <td>
+                                            <a href="{{ url_for('emergency_contact_edit', id=contact.contact_id) }}" class="btn btn-sm btn-warning btn-action" data-bs-toggle="tooltip" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <form action="{{ url_for('emergency_contact_delete', id=contact.contact_id) }}" method="post" class="d-inline">
+                                                <button type="submit" class="btn btn-sm btn-danger btn-delete" data-bs-toggle="tooltip" title="Delete">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% else %}
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i> No emergency contacts found for this employee.
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Salary History -->
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Salary Records</h5>
+                        <a href="{{ url_for('salary_create') }}" class="btn btn-sm btn-primary">
+                            <i class="fas fa-plus-circle me-1"></i> Add Salary Record
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        {% if salary_history %}
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Amount</th>
+                                        <th>Payment Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for salary in salary_history %}
+                                    <tr>
+                                        <td>{{ salary.salary_amount }}</td>
+                                        <td>{{ salary.payment_date }}</td>
+                                        <td>
+                                            <a href="{{ url_for('salary_edit', id=salary.salary_id) }}" class="btn btn-sm btn-warning btn-action" data-bs-toggle="tooltip" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <form action="{{ url_for('salary_delete', id=salary.salary_id) }}" method="post" class="d-inline">
+                                                <button type="submit" class="btn btn-sm btn-danger btn-delete" data-bs-toggle="tooltip" title="Delete">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% else %}
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i> No salary records found for this employee.
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Training -->
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Training Programs</h5>
+                        <a href="{{ url_for('emp_training_create') }}" class="btn btn-sm btn-primary">
+                            <i class="fas fa-plus-circle me-1"></i> Add Training
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        {% if trainings %}
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Training Name</th>
+                                        <th>Description</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for training in trainings %}
+                                    <tr>
+                                        <td>{{ training.training_name }}</td>
+                                        <td>{{ training.description }}</td>
+                                        <td>
+                                            <form action="{{ url_for('emp_training_delete', emp_id=employee.Id, training_id=training.training_id) }}" method="post" class="d-inline">
+                                                <button type="submit" class="btn btn-sm btn-danger btn-delete" data-bs-toggle="tooltip" title="Remove Training">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% else %}
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i> No training programs assigned to this employee.
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Benefits -->
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Benefits</h5>
+                        <a href="{{ url_for('emp_benefit_create') }}" class="btn btn-sm btn-primary">
+                            <i class="fas fa-plus-circle me-1"></i> Add Benefit
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        {% if benefits %}
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Benefit Name</th>
+                                        <th>Description</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for benefit in benefits %}
+                                    <tr>
+                                        <td>{{ benefit.benefit_name }}</td>
+                                        <td>{{ benefit.description }}</td>
+                                        <td>
+                                            <form action="{{ url_for('emp_benefit_delete', emp_id=employee.Id, benefit_id=benefit.benefit_id) }}" method="post" class="d-inline">
+                                                <button type="submit" class="btn btn-sm btn-danger btn-delete" data-bs-toggle="tooltip" title="Remove Benefit">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% else %}
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i> No benefits assigned to this employee.
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Reviews -->
+            <div class="col-md-12 mb-4">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Performance Reviews</h5>
+                        <a href="{{ url_for('performance_review_create') }}" class="btn btn-sm btn-primary">
+                            <i class="fas fa-plus-circle me-1"></i> Add Review
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        {% if performance_reviews %}
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Review Date</th>
+                                        <th>Comments</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for review in performance_reviews %}
+                                    <tr>
+                                        <td>{{ review.review_date }}</td>
+                                        <td>{{ review.comments }}</td>
+                                        <td>
+                                            <a href="{{ url_for('performance_review_edit', id=review.review_id) }}" class="btn btn-sm btn-warning btn-action" data-bs-toggle="tooltip" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <form action="{{ url_for('performance_review_delete', id=review.review_id) }}" method="post" class="d-inline">
+                                                <button type="submit" class="btn btn-sm btn-danger btn-delete" data-bs-toggle="tooltip" title="Delete">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% else %}
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i> No performance reviews found for this employee.
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Employee Modal -->
+<div class="modal fade" id="deleteEmployeeModal" tabindex="-1" aria-labelledby="deleteEmployeeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteEmployeeModalLabel">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete <strong>{{ employee.Name }}</strong>? This action cannot be undone and will remove all associated records.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form action="{{ url_for('employee_delete', id=employee.Id) }}" method="post">
+                    <button type="submit" class="btn btn-danger">Delete Employee</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

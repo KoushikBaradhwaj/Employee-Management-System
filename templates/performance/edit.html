@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Performance Review - Employee Management System{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('performance_review_list') }}">Performance Reviews</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Edit Performance Review</li>
+            </ol>
+        </nav>
+        <h1 class="header-title">
+            <i class="fas fa-edit me-2"></i> Edit Performance Review
+        </h1>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form method="post" class="needs-validation" novalidate>
+            {{ form.csrf_token }}
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="{{ form.review_id.id }}" class="form-label required">Review ID</label>
+                    {{ form.review_id(class="form-control", placeholder="Enter review ID", readonly="readonly") }}
+                    <div class="invalid-feedback">
+                        Please provide a valid review ID.
+                    </div>
+                    {% if form.review_id.errors %}
+                    <div class="text-danger">
+                        {% for error in form.review_id.errors %}
+                        <small>{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label for="{{ form.emp_id.id }}" class="form-label required">Employee</label>
+                    {{ form.emp_id(class="form-select") }}
+                    <div class="invalid-feedback">
+                        Please select an employee.
+                    </div>
+                    {% if form.emp_id.errors %}
+                    <div class="text-danger">
+                        {% for error in form.emp_id.errors %}
+                        <small>{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 mb-3">
+                    <label for="{{ form.review_date.id }}" class="form-label required">Review Date</label>
+                    {{ form.review_date(class="form-control", type="date") }}
+                    <div class="invalid-feedback">
+                        Please provide a valid review date.
+                    </div>
+                    {% if form.review_date.errors %}
+                    <div class="text-danger">
+                        {% for error in form.review_date.errors %}
+                        <small>{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="{{ form.comments.id }}" class="form-label">Comments</label>
+                {{ form.comments(class="form-control", rows="5", placeholder="Enter review comments") }}
+                <div class="invalid-feedback">
+                    Please provide comments for the review.
+                </div>
+                {% if form.comments.errors %}
+                <div class="text-danger">
+                    {% for error in form.comments.errors %}
+                    <small>{{ error }}</small>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="text-end mt-4">
+                <a href="{{ url_for('performance_review_list') }}" class="btn btn-secondary me-2">
+                    <i class="fas fa-times-circle me-1"></i> Cancel
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save me-1"></i> Update Performance Review
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

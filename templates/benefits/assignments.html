@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}Benefit Assignments - Employee Management System{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('benefit_list') }}">Benefits</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Benefit Assignments</li>
+            </ol>
+        </nav>
+        <div class="d-flex justify-content-between align-items-center">
+            <h1 class="header-title">
+                <i class="fas fa-user-shield me-2"></i> Benefit Assignments
+            </h1>
+            <a href="{{ url_for('emp_benefit_create') }}" class="btn btn-primary">
+                <i class="fas fa-plus-circle me-1"></i> Assign Benefit to Employee
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        {% if emp_benefits %}
+        <div class="table-responsive">
+            <table id="benefitAssignmentsTable" class="table table-striped datatable">
+                <thead>
+                    <tr>
+                        <th>Employee ID</th>
+                        <th>Employee Name</th>
+                        <th>Benefit ID</th>
+                        <th>Benefit Name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for emp_benefit, emp_name, benefit_name in emp_benefits %}
+                    <tr>
+                        <td>{{ emp_benefit.emp_id }}</td>
+                        <td>{{ emp_name }}</td>
+                        <td>{{ emp_benefit.benefit_id }}</td>
+                        <td>{{ benefit_name }}</td>
+                        <td>
+                            <form action="{{ url_for('emp_benefit_delete', emp_id=emp_benefit.emp_id, benefit_id=emp_benefit.benefit_id) }}" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-sm btn-danger btn-delete" data-bs-toggle="tooltip" title="Remove Assignment">
+                                    <i class="fas fa-unlink"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle me-2"></i> No benefit assignments found. Assign benefits to employees to get started.
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize the DataTable
+        initDataTable('benefitAssignmentsTable');
+    });
+</script>
+{% endblock %}

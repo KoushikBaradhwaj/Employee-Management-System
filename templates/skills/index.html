@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}Skills - Employee Management System{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="header-title">
+        <i class="fas fa-tools me-2"></i> Skills
+    </h1>
+    <a href="{{ url_for('skill_create') }}" class="btn btn-primary">
+        <i class="fas fa-plus-circle me-1"></i> Add New Skill
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        {% if skills %}
+        <div class="table-responsive">
+            <table id="skillsTable" class="table table-striped datatable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Skill Name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for skill in skills %}
+                    <tr>
+                        <td>{{ skill.skill_id }}</td>
+                        <td>{{ skill.skill_name }}</td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a href="{{ url_for('skill_edit', id=skill.skill_id) }}" class="btn btn-sm btn-warning btn-action" data-bs-toggle="tooltip" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <form action="{{ url_for('skill_delete', id=skill.skill_id) }}" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-danger btn-action btn-delete" data-bs-toggle="tooltip" title="Delete">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle me-2"></i> No skills found. Please add a new skill to get started.
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="d-flex justify-content-between align-items-center mt-4 mb-3">
+    <h2 class="header-title h3">
+        <i class="fas fa-user-tag me-2"></i> Employee Skills
+    </h2>
+    <a href="{{ url_for('emp_skill_create') }}" class="btn btn-success">
+        <i class="fas fa-plus-circle me-1"></i> Assign Skill to Employee
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="mb-3">
+            <p class="text-muted">Manage which skills are assigned to which employees.</p>
+        </div>
+        <a href="{{ url_for('emp_skill_list') }}" class="btn btn-primary">
+            <i class="fas fa-link me-1"></i> View Skill Assignments
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize the DataTable
+        initDataTable('skillsTable');
+    });
+</script>
+{% endblock %}

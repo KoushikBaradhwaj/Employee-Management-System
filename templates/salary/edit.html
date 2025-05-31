@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Salary Record - Employee Management System{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('salary_list') }}">Salary Records</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Edit Salary Record</li>
+            </ol>
+        </nav>
+        <h1 class="header-title">
+            <i class="fas fa-edit me-2"></i> Edit Salary Record
+        </h1>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form method="post" class="needs-validation" novalidate>
+            {{ form.csrf_token }}
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="{{ form.salary_id.id }}" class="form-label required">Salary ID</label>
+                    {{ form.salary_id(class="form-control", placeholder="Enter salary ID", readonly="readonly") }}
+                    <div class="invalid-feedback">
+                        Please provide a valid salary ID.
+                    </div>
+                    {% if form.salary_id.errors %}
+                    <div class="text-danger">
+                        {% for error in form.salary_id.errors %}
+                        <small>{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label for="{{ form.emp_id.id }}" class="form-label required">Employee</label>
+                    {{ form.emp_id(class="form-select") }}
+                    <div class="invalid-feedback">
+                        Please select an employee.
+                    </div>
+                    {% if form.emp_id.errors %}
+                    <div class="text-danger">
+                        {% for error in form.emp_id.errors %}
+                        <small>{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="{{ form.salary_amount.id }}" class="form-label required">Salary Amount</label>
+                    {{ form.salary_amount(class="form-control", placeholder="Enter salary amount") }}
+                    <div class="invalid-feedback">
+                        Please provide a valid salary amount.
+                    </div>
+                    {% if form.salary_amount.errors %}
+                    <div class="text-danger">
+                        {% for error in form.salary_amount.errors %}
+                        <small>{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label for="{{ form.payment_date.id }}" class="form-label required">Payment Date</label>
+                    {{ form.payment_date(class="form-control", type="date") }}
+                    <div class="invalid-feedback">
+                        Please provide a valid payment date.
+                    </div>
+                    {% if form.payment_date.errors %}
+                    <div class="text-danger">
+                        {% for error in form.payment_date.errors %}
+                        <small>{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="text-end mt-4">
+                <a href="{{ url_for('salary_list') }}" class="btn btn-secondary me-2">
+                    <i class="fas fa-times-circle me-1"></i> Cancel
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save me-1"></i> Update Salary Record
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

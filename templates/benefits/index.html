@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block title %}Benefits - Employee Management System{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="header-title">
+        <i class="fas fa-gift me-2"></i> Benefits
+    </h1>
+    <a href="{{ url_for('benefit_create') }}" class="btn btn-primary">
+        <i class="fas fa-plus-circle me-1"></i> Add New Benefit
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        {% if benefits %}
+        <div class="table-responsive">
+            <table id="benefitsTable" class="table table-striped datatable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Benefit Name</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for benefit in benefits %}
+                    <tr>
+                        <td>{{ benefit.benefit_id }}</td>
+                        <td>{{ benefit.benefit_name }}</td>
+                        <td>{{ benefit.description|truncate(50) if benefit.description else 'N/A' }}</td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a href="{{ url_for('benefit_edit', id=benefit.benefit_id) }}" class="btn btn-sm btn-warning btn-action" data-bs-toggle="tooltip" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <form action="{{ url_for('benefit_delete', id=benefit.benefit_id) }}" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-danger btn-action btn-delete" data-bs-toggle="tooltip" title="Delete">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle me-2"></i> No benefits found. Please add a new benefit to get started.
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="d-flex justify-content-between align-items-center mt-4 mb-3">
+    <h2 class="header-title h3">
+        <i class="fas fa-user-shield me-2"></i> Employee Benefits
+    </h2>
+    <a href="{{ url_for('emp_benefit_create') }}" class="btn btn-success">
+        <i class="fas fa-plus-circle me-1"></i> Assign Benefit to Employee
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="mb-3">
+            <p class="text-muted">Manage which benefits are assigned to which employees.</p>
+        </div>
+        <a href="{{ url_for('emp_benefit_list') }}" class="btn btn-primary">
+            <i class="fas fa-link me-1"></i> View Benefit Assignments
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize the DataTable
+        initDataTable('benefitsTable');
+    });
+</script>
+{% endblock %}

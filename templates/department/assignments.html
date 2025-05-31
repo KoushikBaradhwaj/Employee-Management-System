@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}Department Assignments - Employee Management System{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('department_list') }}">Departments</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Department Assignments</li>
+            </ol>
+        </nav>
+        <div class="d-flex justify-content-between align-items-center">
+            <h1 class="header-title">
+                <i class="fas fa-users me-2"></i> Department Assignments
+            </h1>
+            <a href="{{ url_for('emp_department_create') }}" class="btn btn-primary">
+                <i class="fas fa-plus-circle me-1"></i> Assign Employee to Department
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        {% if emp_departments %}
+        <div class="table-responsive">
+            <table id="deptAssignmentsTable" class="table table-striped datatable">
+                <thead>
+                    <tr>
+                        <th>Employee ID</th>
+                        <th>Employee Name</th>
+                        <th>Department ID</th>
+                        <th>Department Name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for emp_dept, emp_name, dept_name in emp_departments %}
+                    <tr>
+                        <td>{{ emp_dept.emp_id }}</td>
+                        <td>{{ emp_name }}</td>
+                        <td>{{ emp_dept.dept_id }}</td>
+                        <td>{{ dept_name }}</td>
+                        <td>
+                            <form action="{{ url_for('emp_department_delete', emp_id=emp_dept.emp_id, dept_id=emp_dept.dept_id) }}" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-sm btn-danger btn-delete" data-bs-toggle="tooltip" title="Remove Assignment">
+                                    <i class="fas fa-unlink"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle me-2"></i> No department assignments found. Assign employees to departments to get started.
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize the DataTable
+        initDataTable('deptAssignmentsTable');
+    });
+</script>
+{% endblock %}

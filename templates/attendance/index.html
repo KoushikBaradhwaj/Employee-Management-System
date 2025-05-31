@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block title %}Attendance Records - Employee Management System{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="header-title">
+        <i class="fas fa-clock me-2"></i> Attendance Records
+    </h1>
+    <a href="{{ url_for('attendance_create') }}" class="btn btn-primary">
+        <i class="fas fa-plus-circle me-1"></i> Add Attendance Record
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        {% if attendance_records %}
+        <div class="table-responsive">
+            <table id="attendanceTable" class="table table-striped datatable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Employee</th>
+                        <th>Date</th>
+                        <th>Clock In</th>
+                        <th>Clock Out</th>
+                        <th>Hours</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record, emp_name in attendance_records %}
+                    <tr>
+                        <td>{{ record.attendance_id }}</td>
+                        <td>{{ emp_name }}</td>
+                        <td>{{ record.date }}</td>
+                        <td>{{ record.clock_in }}</td>
+                        <td>{{ record.clock_out }}</td>
+                        <td>
+                            {% if record.clock_in and record.clock_out %}
+                                {% set hours = (record.clock_out.hour + record.clock_out.minute/60) - (record.clock_in.hour + record.clock_in.minute/60) %}
+                                {{ "%.2f"|format(hours) }}
+                            {% else %}
+                                N/A
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a href="{{ url_for('attendance_edit', id=record.attendance_id) }}" class="btn btn-sm btn-warning btn-action" data-bs-toggle="tooltip" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <form action="{{ url_for('attendance_delete', id=record.attendance_id) }}" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-danger btn-action btn-delete" data-bs-toggle="tooltip" title="Delete">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle me-2"></i> No attendance records found. Please add a new record to get started.
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize the DataTable
+        initDataTable('attendanceTable');
+    });
+</script>
+{% endblock %}

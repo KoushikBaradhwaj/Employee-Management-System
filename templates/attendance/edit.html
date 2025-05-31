@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Attendance Record - Employee Management System{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('attendance_list') }}">Attendance Records</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Edit Attendance Record</li>
+            </ol>
+        </nav>
+        <h1 class="header-title">
+            <i class="fas fa-edit me-2"></i> Edit Attendance Record
+        </h1>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form method="post" class="needs-validation" novalidate>
+            {{ form.csrf_token }}
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="{{ form.attendance_id.id }}" class="form-label required">Attendance ID</label>
+                    {{ form.attendance_id(class="form-control", placeholder="Enter attendance ID", readonly="readonly") }}
+                    <div class="invalid-feedback">
+                        Please provide a valid attendance ID.
+                    </div>
+                    {% if form.attendance_id.errors %}
+                    <div class="text-danger">
+                        {% for error in form.attendance_id.errors %}
+                        <small>{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label for="{{ form.emp_id.id }}" class="form-label required">Employee</label>
+                    {{ form.emp_id(class="form-select") }}
+                    <div class="invalid-feedback">
+                        Please select an employee.
+                    </div>
+                    {% if form.emp_id.errors %}
+                    <div class="text-danger">
+                        {% for error in form.emp_id.errors %}
+                        <small>{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="{{ form.date.id }}" class="form-label required">Date</label>
+                    {{ form.date(class="form-control", type="date") }}
+                    <div class="invalid-feedback">
+                        Please provide a valid date.
+                    </div>
+                    {% if form.date.errors %}
+                    <div class="text-danger">
+                        {% for error in form.date.errors %}
+                        <small>{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label for="{{ form.clock_in.id }}" class="form-label">Clock In Time</label>
+                    {{ form.clock_in(class="form-control", type="time") }}
+                    <div class="invalid-feedback">
+                        Please provide a valid clock in time.
+                    </div>
+                    {% if form.clock_in.errors %}
+                    <div class="text-danger">
+                        {% for error in form.clock_in.errors %}
+                        <small>{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label for="{{ form.clock_out.id }}" class="form-label">Clock Out Time</label>
+                    {{ form.clock_out(class="form-control", type="time") }}
+                    <div class="invalid-feedback">
+                        Please provide a valid clock out time.
+                    </div>
+                    {% if form.clock_out.errors %}
+                    <div class="text-danger">
+                        {% for error in form.clock_out.errors %}
+                        <small>{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="text-end mt-4">
+                <a href="{{ url_for('attendance_list') }}" class="btn btn-secondary me-2">
+                    <i class="fas fa-times-circle me-1"></i> Cancel
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save me-1"></i> Update Attendance Record
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

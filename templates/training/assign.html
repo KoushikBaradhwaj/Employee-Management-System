@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}Assign Training to Employee - Employee Management System{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('training_list') }}">Training Programs</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('emp_training_list') }}">Training Assignments</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Assign Training</li>
+            </ol>
+        </nav>
+        <h1 class="header-title">
+            <i class="fas fa-user-plus me-2"></i> Assign Training to Employee
+        </h1>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form method="post" class="needs-validation" novalidate>
+            {{ form.csrf_token }}
+
+            <div class="mb-3">
+                <label for="{{ form.emp_id.id }}" class="form-label required">Employee</label>
+                {{ form.emp_id(class="form-select") }}
+                <div class="invalid-feedback">
+                    Please select an employee.
+                </div>
+                {% if form.emp_id.errors %}
+                <div class="text-danger">
+                    {% for error in form.emp_id.errors %}
+                    <small>{{ error }}</small>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="{{ form.training_id.id }}" class="form-label required">Training Program</label>
+                {{ form.training_id(class="form-select") }}
+                <div class="invalid-feedback">
+                    Please select a training program.
+                </div>
+                {% if form.training_id.errors %}
+                <div class="text-danger">
+                    {% for error in form.training_id.errors %}
+                    <small>{{ error }}</small>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="text-end mt-4">
+                <a href="{{ url_for('emp_training_list') }}" class="btn btn-secondary me-2">
+                    <i class="fas fa-times-circle me-1"></i> Cancel
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save me-1"></i> Assign Training
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

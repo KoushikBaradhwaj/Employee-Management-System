@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}Assign Employee to Department - Employee Management System{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('department_list') }}">Departments</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('emp_department_list') }}">Department Assignments</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Assign Employee</li>
+            </ol>
+        </nav>
+        <h1 class="header-title">
+            <i class="fas fa-user-plus me-2"></i> Assign Employee to Department
+        </h1>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form method="post" class="needs-validation" novalidate>
+            {{ form.csrf_token }}
+
+            <div class="mb-3">
+                <label for="{{ form.emp_id.id }}" class="form-label required">Employee</label>
+                {{ form.emp_id(class="form-select") }}
+                <div class="invalid-feedback">
+                    Please select an employee.
+                </div>
+                {% if form.emp_id.errors %}
+                <div class="text-danger">
+                    {% for error in form.emp_id.errors %}
+                    <small>{{ error }}</small>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="{{ form.dept_id.id }}" class="form-label required">Department</label>
+                {{ form.dept_id(class="form-select") }}
+                <div class="invalid-feedback">
+                    Please select a department.
+                </div>
+                {% if form.dept_id.errors %}
+                <div class="text-danger">
+                    {% for error in form.dept_id.errors %}
+                    <small>{{ error }}</small>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="text-end mt-4">
+                <a href="{{ url_for('emp_department_list') }}" class="btn btn-secondary me-2">
+                    <i class="fas fa-times-circle me-1"></i> Cancel
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save me-1"></i> Assign to Department
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Department - Employee Management System{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('department_list') }}">Departments</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Edit Department</li>
+            </ol>
+        </nav>
+        <h1 class="header-title">
+            <i class="fas fa-edit me-2"></i> Edit Department: {{ department.dept_name }}
+        </h1>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form method="post" class="needs-validation" novalidate>
+            {{ form.csrf_token }}
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="{{ form.dept_id.id }}" class="form-label required">Department ID</label>
+                    {{ form.dept_id(class="form-control", placeholder="Enter department ID") }}
+                    <div class="invalid-feedback">
+                        Please provide a valid department ID.
+                    </div>
+                    {% if form.dept_id.errors %}
+                    <div class="text-danger">
+                        {% for error in form.dept_id.errors %}
+                        <small>{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label for="{{ form.dept_name.id }}" class="form-label required">Department Name</label>
+                    {{ form.dept_name(class="form-control", placeholder="Enter department name") }}
+                    <div class="invalid-feedback">
+                        Please provide the department name.
+                    </div>
+                    {% if form.dept_name.errors %}
+                    <div class="text-danger">
+                        {% for error in form.dept_name.errors %}
+                        <small>{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="{{ form.dept_location.id }}" class="form-label">Department Location</label>
+                {{ form.dept_location(class="form-control", placeholder="Enter department location") }}
+                <div class="invalid-feedback">
+                    Please provide the department location.
+                </div>
+                {% if form.dept_location.errors %}
+                <div class="text-danger">
+                    {% for error in form.dept_location.errors %}
+                    <small>{{ error }}</small>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="text-end mt-4">
+                <a href="{{ url_for('department_list') }}" class="btn btn-secondary me-2">
+                    <i class="fas fa-times-circle me-1"></i> Cancel
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save me-1"></i> Update Department
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

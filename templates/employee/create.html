@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+
+{% block title %}Add New Employee - Employee Management System{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('employee_list') }}">Employees</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Add New Employee</li>
+            </ol>
+        </nav>
+        <h1 class="header-title">
+            <i class="fas fa-user-plus me-2"></i> Add New Employee
+        </h1>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form method="post" class="needs-validation" novalidate>
+            {{ form.csrf_token }}
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="{{ form.id.id }}" class="form-label required">Employee ID</label>
+                    {{ form.id(class="form-control", placeholder="Enter employee ID") }}
+                    <div class="invalid-feedback">
+                        Please provide a valid employee ID.
+                    </div>
+                    {% if form.id.errors %}
+                    <div class="text-danger">
+                        {% for error in form.id.errors %}
+                        <small>{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label for="{{ form.name.id }}" class="form-label required">Full Name</label>
+                    {{ form.name(class="form-control", placeholder="Enter full name") }}
+                    <div class="invalid-feedback">
+                        Please provide the employee's name.
+                    </div>
+                    {% if form.name.errors %}
+                    <div class="text-danger">
+                        {% for error in form.name.errors %}
+                        <small>{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="{{ form.email.id }}" class="form-label required">Email Address</label>
+                    {{ form.email(class="form-control", placeholder="Enter email address") }}
+                    <div class="invalid-feedback">
+                        Please provide a valid email address.
+                    </div>
+                    {% if form.email.errors %}
+                    <div class="text-danger">
+                        {% for error in form.email.errors %}
+                        <small>{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label for="{{ form.phone.id }}" class="form-label">Phone Number</label>
+                    {{ form.phone(class="form-control", placeholder="Enter phone number") }}
+                    <div class="invalid-feedback">
+                        Please provide a valid phone number.
+                    </div>
+                    {% if form.phone.errors %}
+                    <div class="text-danger">
+                        {% for error in form.phone.errors %}
+                        <small>{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="{{ form.post.id }}" class="form-label">Position/Role</label>
+                    {{ form.post(class="form-control", placeholder="Enter position or role") }}
+                    <div class="invalid-feedback">
+                        Please provide the employee's position.
+                    </div>
+                    {% if form.post.errors %}
+                    <div class="text-danger">
+                        {% for error in form.post.errors %}
+                        <small>{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label for="{{ form.salary.id }}" class="form-label">Salary</label>
+                    {{ form.salary(class="form-control", placeholder="Enter salary amount") }}
+                    <div class="invalid-feedback">
+                        Please provide a valid salary amount.
+                    </div>
+                    {% if form.salary.errors %}
+                    <div class="text-danger">
+                        {% for error in form.salary.errors %}
+                        <small>{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="{{ form.address.id }}" class="form-label">Address</label>
+                {{ form.address(class="form-control", rows="3", placeholder="Enter full address") }}
+                <div class="invalid-feedback">
+                    Please provide the employee's address.
+                </div>
+                {% if form.address.errors %}
+                <div class="text-danger">
+                    {% for error in form.address.errors %}
+                    <small>{{ error }}</small>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="text-end mt-4">
+                <a href="{{ url_for('employee_list') }}" class="btn btn-secondary me-2">
+                    <i class="fas fa-times-circle me-1"></i> Cancel
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save me-1"></i> Save Employee
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

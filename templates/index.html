@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - Employee Management System{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="header-title">
+            <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+        </h1>
+        <p class="text-muted">Welcome to the Employee Management System. Here's an overview of your organization.</p>
+    </div>
+</div>
+
+<!-- Quick Stats Cards -->
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card card-dashboard h-100 border-primary">
+            <div class="card-body text-center">
+                <div class="dashboard-icon text-primary">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h5 class="card-title">Total Employees</h5>
+                <p class="display-4 fw-bold">{{ emp_count }}</p>
+                <p class="card-text">Currently active employees in your organization</p>
+                <a href="{{ url_for('employee_list') }}" class="btn btn-sm btn-primary">View All Employees</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+        <div class="card card-dashboard h-100 border-success">
+            <div class="card-body text-center">
+                <div class="dashboard-icon text-success">
+                    <i class="fas fa-building"></i>
+                </div>
+                <h5 class="card-title">Departments</h5>
+                <p class="display-4 fw-bold">{{ dept_count }}</p>
+                <p class="card-text">Active departments within the organization</p>
+                <a href="{{ url_for('department_list') }}" class="btn btn-sm btn-success">View All Departments</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+        <div class="card card-dashboard h-100 border-info">
+            <div class="card-body text-center">
+                <div class="dashboard-icon text-info">
+                    <i class="fas fa-project-diagram"></i>
+                </div>
+                <h5 class="card-title">Projects</h5>
+                <p class="display-4 fw-bold">{{ proj_count }}</p>
+                <p class="card-text">Ongoing and upcoming projects</p>
+                <a href="{{ url_for('project_list') }}" class="btn btn-sm btn-info">View All Projects</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card card-dashboard h-100 border-warning">
+            <div class="card-body text-center">
+                <div class="dashboard-icon text-warning">
+                    <i class="fas fa-tools"></i>
+                </div>
+                <h5 class="card-title">Skills</h5>
+                <p class="display-4 fw-bold">{{ skill_count }}</p>
+                <p class="card-text">Different skills tracked in the system</p>
+                <a href="{{ url_for('skill_list') }}" class="btn btn-sm btn-warning">View All Skills</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+        <div class="card card-dashboard h-100 border-danger">
+            <div class="card-body text-center">
+                <div class="dashboard-icon text-danger">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h5 class="card-title">Training Programs</h5>
+                <p class="display-4 fw-bold">{{ training_count }}</p>
+                <p class="card-text">Available training programs for employees</p>
+                <a href="{{ url_for('training_list') }}" class="btn btn-sm btn-danger">View All Trainings</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <a href="{{ url_for('employee_create') }}" class="btn btn-primary w-100">
+                            <i class="fas fa-user-plus me-2"></i> Add New Employee
+                        </a>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <a href="{{ url_for('department_create') }}" class="btn btn-success w-100">
+                            <i class="fas fa-plus-circle me-2"></i> Add New Department
+                        </a>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <a href="{{ url_for('project_create') }}" class="btn btn-info w-100">
+                            <i class="fas fa-clipboard-list me-2"></i> Add New Project
+                        </a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <a href="{{ url_for('attendance_create') }}" class="btn btn-secondary w-100">
+                            <i class="fas fa-clock me-2"></i> Record Attendance
+                        </a>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <a href="{{ url_for('leave_create') }}" class="btn btn-warning w-100">
+                            <i class="fas fa-calendar-minus me-2"></i> Add Leave Record
+                        </a>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <a href="{{ url_for('performance_review_create') }}" class="btn btn-danger w-100">
+                            <i class="fas fa-star me-2"></i> Add Performance Review
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- System Information -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">System Information</h5>
+            </div>
+            <div class="card-body">
+                <p>Employee Management System provides a comprehensive solution for managing your organization's workforce.</p>
+                <p>Use the navigation links above to access different areas of the system:</p>
+                <ul>
+                    <li><strong>Employees:</strong> Manage employee information, contacts, and profiles</li>
+                    <li><strong>Organization:</strong> Manage departments, projects, and company structure</li>
+                    <li><strong>HR Management:</strong> Track attendance, leaves, performance reviews</li>
+                    <li><strong>Skills & Training:</strong> Track employee skills and training programs</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

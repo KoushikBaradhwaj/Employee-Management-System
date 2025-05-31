@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}Add New Skill - Employee Management System{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('skill_list') }}">Skills</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Add New Skill</li>
+            </ol>
+        </nav>
+        <h1 class="header-title">
+            <i class="fas fa-plus-circle me-2"></i> Add New Skill
+        </h1>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form method="post" class="needs-validation" novalidate>
+            {{ form.csrf_token }}
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="{{ form.skill_id.id }}" class="form-label required">Skill ID</label>
+                    {{ form.skill_id(class="form-control", placeholder="Enter skill ID") }}
+                    <div class="invalid-feedback">
+                        Please provide a valid skill ID.
+                    </div>
+                    {% if form.skill_id.errors %}
+                    <div class="text-danger">
+                        {% for error in form.skill_id.errors %}
+                        <small>{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label for="{{ form.skill_name.id }}" class="form-label required">Skill Name</label>
+                    {{ form.skill_name(class="form-control", placeholder="Enter skill name") }}
+                    <div class="invalid-feedback">
+                        Please provide the skill name.
+                    </div>
+                    {% if form.skill_name.errors %}
+                    <div class="text-danger">
+                        {% for error in form.skill_name.errors %}
+                        <small>{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="text-end mt-4">
+                <a href="{{ url_for('skill_list') }}" class="btn btn-secondary me-2">
+                    <i class="fas fa-times-circle me-1"></i> Cancel
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save me-1"></i> Save Skill
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
